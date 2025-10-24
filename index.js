@@ -1,4 +1,4 @@
-
+//Rebuild trigger for render
 const express = require("express")
 const path = require("path")
 const cors = require("cors");
@@ -143,7 +143,7 @@ app.get('/theater/', async (request, response) => {
 
 // to get theater details based on location and movie name
 
-app.post('/theater', async (request, response) => {
+app.post('/theater/', async (request, response) => {
     try {
 
         const { location, movieName } = request.body
