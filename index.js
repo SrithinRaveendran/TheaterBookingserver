@@ -8,7 +8,7 @@ const sqlite3 = require('sqlite3')
 
 const app = express()
 app.use(express.json())
-app.use(cors({ origin: "https://theaterbookingserver-3.onrender.com" }));
+app.use(cors({ origin: "theater-booking-front-end.vercel.app" }));
 const dbpath = path.join(__dirname, "database.db")
 
 let db = null
