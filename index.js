@@ -9,13 +9,15 @@ const sqlite3 = require('sqlite3')
 const app = express()
 app.use(express.json())
 
-app.use(cors({
-  origin: [
-    'https://theater-booking-front-end.vercel.app',
-    'http://localhost:3000'
-  ]
-}));
-app.options('*', cors());
+app.use(cors({ origin: "https://theater-booking-front-end.vercel.app" }));
+
+// app.use(cors({
+//   origin: [
+//     'https://theater-booking-front-end.vercel.app',
+//     'http://localhost:3000'
+//   ]
+// }));
+// app.options('*', cors());
 
 
 
