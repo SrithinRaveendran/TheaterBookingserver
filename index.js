@@ -318,3 +318,69 @@ app.post("/theater/", async (request, response) => {
     }
 })
 
+// DELETE /deleteAll  — delete all movies and theaters
+app.delete("/deleteAll", async (request, response) => {
+    try {
+        await db.run(`DELETE FROM Theater`)
+        await db.run(`DELETE FROM bookings`)
+        response.json({ message: "All movies and theaters deleted successfully" })
+    } catch (e) {
+        console.log(e.message)
+        response.status(500).json({ error: e.message })
+    }
+})
+
+// DELETE /theater  — delete all theaters
+app.delete("/theater", async (request, response) => {
+    try {
+        await db.run(`DELETE FROM Theater`)
+        response.json({ message: "All theaters deleted successfully" })
+    } catch (e) {
+        console.log(e.message)
+        response.status(500).json({ error: e.message })
+    }
+})
+
+
+// POST /addMovies  — add multiple movies at once
+app.post("/addMovies", async (request, response) => {
+    try {
+        const movies = request.body  // expects an array
+        if (!Array.isArray(movies) || movies.length === 0) {
+            return response.status(400).json({ error: "Send an array of movies" })
+        }
+        for (const movie of movies) {
+            const { location, theater_name, time, movie_name, movie_img } = movie
+            const timeJson = JSON.stringify(time)
+            await db.run(
+                `INSERT INTO Theater(location, theater_name, time, movie_name, movie_img) VALUES (?, ?, ?, ?, ?)`,
+                [location, theater_name, timeJson, movie_name, movie_img]
+            )
+        }
+        response.json({ message: `${movies.length} movies added successfully` })
+    } catch (e) {
+        console.log(e.message)
+        response.status(500).json({ error: e.message })
+    }
+})
+
+// POST /addBookings  — add multiple bookings/seats at once
+app.post("/addBookings", async (request, response) => {
+    try {
+        const bookings = request.body  // expects an array
+        if (!Array.isArray(bookings) || bookings.length === 0) {
+            return response.status(400).json({ error: "Send an array of bookings" })
+        }
+        for (const booking of bookings) {
+            const { user_id, start_time, seat_No, status, location, theater_name, movie_name } = booking
+            await db.run(
+                `INSERT INTO bookings(user_id, start_time, seat_No, status, location, theater_name, movie_name) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [user_id, start_time, seat_No, status || "BOOKED", location, theater_name, movie_name]
+            )
+        }
+        response.json({ message: `${bookings.length} bookings added successfully` })
+    } catch (e) {
+        console.log(e.message)
+        response.status(500).json({ error: e.message })
+    }
+})
