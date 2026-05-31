@@ -19,9 +19,7 @@ app.use(express.json())
 //   ]
 // }));
 app.use(cors());
-app.options('*', cors());
-
-
+// app.options('*', cors());
 
 
 const dbpath = path.join(__dirname, "database.db")
