@@ -9,15 +9,17 @@ const sqlite3 = require('sqlite3')
 const app = express()
 app.use(express.json())
 
-app.use(cors({ origin: "https://theater-booking-front-end.vercel.app" }));
+//app.use(cors({ origin: "https://theater-booking-front-end.vercel.app" }));
 
 // app.use(cors({
 //   origin: [
 //     'https://theater-booking-front-end.vercel.app',
-//     'http://localhost:3000'
+//     'http://localhost:3000',
+//     'http://localhost:5173'
 //   ]
 // }));
-// app.options('*', cors());
+app.use(cors());
+app.options('*', cors());
 
 
 
@@ -85,11 +87,9 @@ app.post("/seatbooking/", async (request, response) => {
         const query = `INSERT INTO bookings(user_id, start_time,seat_No,status,location,theater_name,movie_name) VALUES (?,?,?,?,?,?,?)`
         await db.run(query, [user_id, start_time, seat_No, status, location, theater_name, movie_name])
         response.send("added seat")
-
     }
     catch (e) {
-        response.send(e.message)
-        
+        response.send(e.message)    
     }
 })
 
